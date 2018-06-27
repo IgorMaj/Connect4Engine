@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import view.MainWindow;
 
-public class PlayerMove implements ActionListener {
+public class PlayerMove implements ActionListener  {
 	
-	private MainWindow window;
 	int column;
+	private MainWindow window;
 	
 	public PlayerMove(MainWindow w,int col) {
 		window = w;
@@ -21,5 +21,6 @@ public class PlayerMove implements ActionListener {
 		
 		
 	}
+
 
 }

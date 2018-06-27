@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.GridLayout;
+import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -8,6 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import controller.Agent;
+import controller.RandomAgent;
+import controller.PlayerAgent;
 import exception.IllegalMove;
 import model.Constants;
 import model.GameField;
@@ -28,13 +32,20 @@ public class GridView extends JPanel implements Observer {
 	private Turn turn;
 	
 	private MainWindow parent;
-	
+	private LinkedHashMap<Turn,Agent> agents;
 	
 	public GridView(MainWindow p) {
 		gameGrid = new GameGrid();
 		turn = Turn.PLAYER_1;
 		parent = p;
+		setAgents();
 		setUI();
+	}
+	
+	public void setAgents() {
+		agents = new LinkedHashMap<Turn,Agent>();
+		agents.put(Turn.PLAYER_1, new PlayerAgent());
+		agents.put(Turn.PLAYER_2,new RandomAgent());
 	}
 	
 	public GridView(GameGrid g,MainWindow p) {
@@ -45,11 +56,23 @@ public class GridView extends JPanel implements Observer {
 	}
 	
 	public void nextTurn() {
+		
 		if(turn==Turn.PLAYER_1) {
 			turn = Turn.PLAYER_2;
-			return;
 		}
-		turn = Turn.PLAYER_1;
+		else {
+			turn = Turn.PLAYER_1;
+		}
+		
+		if(agents.get(turn) instanceof PlayerAgent) {
+			parent.setButtonsStatus(true);
+		}
+		else {
+			parent.setButtonsStatus(false);
+			int column = agents.get(turn).calculateNextMove(getGrid(), turn);
+			performMove(column,turn);
+		}
+		
 	}
 	
 	private void setUI() {
@@ -78,6 +101,8 @@ public class GridView extends JPanel implements Observer {
 			gameGrid.performMove(column, player);
 		} catch (IllegalMove e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
+			//ilegalan potez ovde jedino moze da se desi igracevom greskom
+			parent.setButtonsStatus(true);
 			return;
 		}
 		performMoveAnimation(column,player);
@@ -116,7 +141,6 @@ public class GridView extends JPanel implements Observer {
 		}
 		
 		nextTurn();
-		parent.setButtonsStatus(true);
 		
 	}
 

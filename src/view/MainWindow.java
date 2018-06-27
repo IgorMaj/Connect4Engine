@@ -19,8 +19,6 @@ public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 3172688540921699213L;
 	private GridView gridView;
 	
-	
-	
 	private LinkedList<JButton> buttons = new LinkedList<JButton>();
 	
 	public MainWindow() {

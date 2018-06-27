@@ -5,7 +5,7 @@ import exception.IllegalMove;
 public class GameGrid {
 	
 	
-	private GameField[][] grid;
+	protected GameField[][] grid;
 	
 	public GameGrid() {
 		grid = new GameField[Constants.NUM_ROWS][Constants.NUM_COLS];
