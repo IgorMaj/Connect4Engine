@@ -38,14 +38,21 @@ public class GridView extends JPanel implements Observer {
 		gameGrid = new GameGrid();
 		turn = Turn.PLAYER_1;
 		parent = p;
-		setAgents();
 		setUI();
+		setAgents();
 	}
 	
 	public void setAgents() {
 		agents = new LinkedHashMap<Turn,Agent>();
 		agents.put(Turn.PLAYER_1, new PlayerAgent());
 		agents.put(Turn.PLAYER_2,new RandomAgent());
+		
+		if(!(agents.get(Turn.PLAYER_1) instanceof PlayerAgent)) {
+			aiTurn();
+		}
+		else {
+			parent.setButtonsStatus(true);
+		}
 	}
 	
 	public GridView(GameGrid g,MainWindow p) {
@@ -53,6 +60,13 @@ public class GridView extends JPanel implements Observer {
 		turn = Turn.PLAYER_1;
 		parent = p;
 		setUI();
+		setAgents();
+	}
+	
+	private void aiTurn() {
+		parent.setButtonsStatus(false);
+		int column = agents.get(turn).calculateNextMove(getGrid(), turn);
+		performMove(column,turn);
 	}
 	
 	public void nextTurn() {
@@ -68,9 +82,7 @@ public class GridView extends JPanel implements Observer {
 			parent.setButtonsStatus(true);
 		}
 		else {
-			parent.setButtonsStatus(false);
-			int column = agents.get(turn).calculateNextMove(getGrid(), turn);
-			performMove(column,turn);
+			aiTurn();
 		}
 		
 	}

@@ -23,10 +23,10 @@ public class MainWindow extends JFrame{
 	
 	public MainWindow() {
 		
-		setGridView(new GridView(this));
 		BorderLayout bLayout = new BorderLayout();
 		this.setLayout(bLayout);
 		setControlButtons();
+		setGridView(new GridView(this));
 		this.add(getGridView(),BorderLayout.CENTER);
 		this.setSize(Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +43,7 @@ public class MainWindow extends JFrame{
 			button = new JButton(""+i);
 			int column = i;
 			buttons.add(button);
+			button.setEnabled(false);
 			button.addActionListener(new PlayerMove(this,column));
 			buttonPanel.add(button);
 		}
