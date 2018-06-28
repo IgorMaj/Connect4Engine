@@ -10,4 +10,13 @@ public class PlayerAgent extends Agent {
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerAgent";
+	}
+
+	@Override
+	public void resetAgent() {
+	}
+
 }

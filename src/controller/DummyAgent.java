@@ -7,7 +7,12 @@ import model.GameGrid;
 import model.SearchState;
 import model.Turn;
 
-public class RandomAgent extends Agent {
+public class DummyAgent extends Agent {
+
+	@Override
+	public String toString() {
+		return "DummyAgent";
+	}
 
 	private Random rand = new Random();
 	
@@ -15,9 +20,14 @@ public class RandomAgent extends Agent {
 	public int calculateNextMove(GameGrid g, Turn t) {
 		
 		SearchState currentState = new SearchState(g);
-		LinkedList<SearchState> successors = currentState.getSuccessors(t);
+		LinkedList<SearchState> successors = currentState.getSuccessors();
 		SearchState nextState = successors.get(rand.nextInt(successors.size()));
 		return nextState.getColumn();
+	}
+
+	@Override
+	public void resetAgent() {
+		
 	}
 	
 }

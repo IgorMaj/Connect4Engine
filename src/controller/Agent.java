@@ -7,4 +7,6 @@ public abstract class Agent {
 	
 	
 	public abstract int calculateNextMove(GameGrid g,Turn t);
+	
+	public abstract void resetAgent();
 }

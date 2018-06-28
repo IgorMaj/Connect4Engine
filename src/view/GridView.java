@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import controller.Agent;
-import controller.RandomAgent;
 import controller.PlayerAgent;
 import exception.IllegalMove;
 import model.Constants;
@@ -36,16 +35,19 @@ public class GridView extends JPanel implements Observer {
 	
 	public GridView(MainWindow p) {
 		gameGrid = new GameGrid();
-		turn = Turn.PLAYER_1;
 		parent = p;
 		setUI();
-		setAgents();
+		//setAgents();
 	}
 	
-	public void setAgents() {
+	public void setAgents(Agent agent1,Agent agent2) {
 		agents = new LinkedHashMap<Turn,Agent>();
-		agents.put(Turn.PLAYER_1, new PlayerAgent());
-		agents.put(Turn.PLAYER_2,new RandomAgent());
+		agent1.resetAgent();
+		agent2.resetAgent();
+		resetGrid();
+		turn = Turn.PLAYER_1;
+		agents.put(Turn.PLAYER_1, agent1);
+		agents.put(Turn.PLAYER_2,agent2);
 		
 		if(!(agents.get(Turn.PLAYER_1) instanceof PlayerAgent)) {
 			aiTurn();
@@ -55,12 +57,22 @@ public class GridView extends JPanel implements Observer {
 		}
 	}
 	
+	private void resetGrid() {
+		for(int i=0;i<Constants.NUM_ROWS;i++) {
+			for(int j=0;j<Constants.NUM_COLS;j++) {
+				gameGrid.getGrid()[i][j] = GameField.FREE;
+				view[i][j].resetGameField();
+			}
+		}
+		
+	}
+
 	public GridView(GameGrid g,MainWindow p) {
 		gameGrid = g;
 		turn = Turn.PLAYER_1;
 		parent = p;
 		setUI();
-		setAgents();
+		//setAgents();
 	}
 	
 	private void aiTurn() {
@@ -109,7 +121,6 @@ public class GridView extends JPanel implements Observer {
 	public void performMove(int column,Turn player) {
 		
 		try {
-			
 			gameGrid.performMove(column, player);
 		} catch (IllegalMove e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
