@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controller.Agent;
+import controller.AlphaBetaAgent;
 import controller.DummyAgent;
 import controller.MinimaxAgent;
 import controller.PlayerAgent;
@@ -91,7 +92,8 @@ public class MainWindow extends JFrame{
 	private void setupComboxBox(JComboBox<Agent> box1) {
 		box1.setEditable(false);
 		box1.addItem(new DummyAgent());
-		box1.addItem(new MinimaxAgent(6));
+		box1.addItem(new MinimaxAgent(4));
+		box1.addItem(new AlphaBetaAgent(10));
 		box1.addItem(new PlayerAgent());
 		
 	}

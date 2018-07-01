@@ -92,6 +92,15 @@ public class GameGrid {
 		
 		throw new IllegalMove();
 	}
+
+	public void setGrid(int i, int j, GameField free) {
+		grid[i][j] = free;
+		
+	}
+
+	public GameField getGrid(int i, int j) {
+		return grid[i][j];
+	}
 	
 	
 }

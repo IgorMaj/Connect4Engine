@@ -1,4 +1,5 @@
 package controller;
+
 import java.util.LinkedList;
 
 import model.Constants;
@@ -6,8 +7,8 @@ import model.GameGrid;
 import model.SearchState;
 import model.Turn;
 
-public class MinimaxAgent extends Agent {
-	
+public class AlphaBetaAgent extends Agent {
+
 	private int depth;
 	private SearchState currentState;
 	private Heuristic heuristic;
@@ -15,14 +16,14 @@ public class MinimaxAgent extends Agent {
 	private int numNodes = 0;
 	
 	
-	public MinimaxAgent(int d,Heuristic h) {
+	public AlphaBetaAgent(int d,Heuristic h) {
 		depth = d;
 		currentState = null;
 		heuristic = h;
 	}
 	
 
-	public MinimaxAgent(int d) {
+	public AlphaBetaAgent(int d) {
 		depth = d;
 		currentState = null;
 		heuristic =  new NullHeuristic();
@@ -31,7 +32,7 @@ public class MinimaxAgent extends Agent {
 
 	@Override
 	public String toString() {
-		return "MinimaxAgent";
+		return "AlphaBetaAgent";
 	}
 
 
@@ -59,9 +60,9 @@ public class MinimaxAgent extends Agent {
 			currentState = updateState(g);
 		}
 		
-		minimax(currentState,depth);
+		alphaBeta(currentState,Integer.MIN_VALUE,Integer.MAX_VALUE,depth);
 		currentState = pickBestMove(currentState);
-		System.out.println("Minimax num nodes:"+numNodes);
+		System.out.println("Alpha beta Nodes: "+numNodes+"\n");
 		return currentState.getColumn();
 	}
 	
@@ -113,7 +114,7 @@ public class MinimaxAgent extends Agent {
 	}
 
 
-	private int minimax(SearchState state,int realDepth) {
+	private int alphaBeta(SearchState state,int alpha,int beta,int realDepth) {
 		
 		int depthPenalty = (depth-realDepth);
 		if(state.checkVictory(Turn.PLAYER_1)) {
@@ -130,11 +131,11 @@ public class MinimaxAgent extends Agent {
 		}
 		else {
 			if(state.getTurn()==Turn.PLAYER_1) {
-				state.setScore(maxValue(state,realDepth)+heuristic.computeScore(state));
+				state.setScore(maxValue(state,alpha,beta,realDepth)+heuristic.computeScore(state));
 				
 			}
 			else {
-				state.setScore(minValue(state,realDepth)-heuristic.computeScore(state));
+				state.setScore(minValue(state,alpha,beta,realDepth)-heuristic.computeScore(state));
 			}
 		}
 		
@@ -142,22 +143,32 @@ public class MinimaxAgent extends Agent {
 		
 	}
 	
-	private int minValue(SearchState state,int realDepth) {
+	private int minValue(SearchState state,int alpha,int beta,int realDepth) {
 		LinkedList<SearchState> successors = state.getSuccessors();
 		int retVal = Integer.MAX_VALUE;
 		for(SearchState s:successors) {
-			retVal = Math.min(retVal,minimax(s,realDepth-1));
+			retVal = Math.min(retVal,alphaBeta(s,alpha,beta,realDepth-1));
+			
+			beta = Math.min(beta, retVal);
+			if(alpha>=beta) {
+				break;
+			}
 		}
 		numNodes++;
 		return retVal;
 	}
 
 
-	private int maxValue(SearchState state, int realDepth) {
+	private int maxValue(SearchState state,int alpha,int beta ,int realDepth) {
 		LinkedList<SearchState> successors = state.getSuccessors();
 		int retVal = Integer.MIN_VALUE;
 		for(SearchState s:successors) {
-			retVal = Math.max(retVal,minimax(s,realDepth-1));
+			retVal = Math.max(retVal,alphaBeta(s,alpha,beta,realDepth-1));
+			
+			alpha = Math.max(retVal,alpha);
+			if(alpha>=beta) {
+				break;
+			}
 		}
 		numNodes++;
 		return retVal;
@@ -168,6 +179,5 @@ public class MinimaxAgent extends Agent {
 	public void resetAgent() {
 		currentState = null;
 	}
-	
 
 }

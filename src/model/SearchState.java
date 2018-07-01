@@ -12,6 +12,21 @@ public class SearchState extends GameGrid {
 	
 	private Turn turn;
 	
+	private static int[] moveOrder;
+	
+	static {
+		moveOrder = new int[Constants.NUM_COLS];
+		for(int i=0;i<moveOrder.length;i++) {
+			moveOrder[i] = i+1;
+		}
+		
+		int temp = moveOrder[0];
+		int index = Constants.NUM_COLS/2;
+		moveOrder[0] = moveOrder[index];
+		moveOrder[index] = temp;
+		
+	}
+	
 	public Turn getTurn() {
 		return turn;
 	}
@@ -73,7 +88,7 @@ public class SearchState extends GameGrid {
 	
 
 	private void generateSuccessors() {
-		for(int column=1;column<=Constants.NUM_COLS;column++) {
+		for(int column:moveOrder) {
 			SearchState potentialSuccessor = new SearchState(this);
 			try {
 				potentialSuccessor.performMove(column, turn);
@@ -116,7 +131,7 @@ public class SearchState extends GameGrid {
 	public boolean isEqualToGrid(GameGrid g) {
 		for(int i=0;i< Constants.NUM_ROWS;i++) {
 			for(int j=0;j<Constants.NUM_COLS;j++) {
-				if(g.grid[i][j]!=grid[i][j]) {
+				if(g.getGrid(i,j)!=grid[i][j]) {
 					return false;
 				}
 			}

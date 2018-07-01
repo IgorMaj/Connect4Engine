@@ -60,7 +60,7 @@ public class GridView extends JPanel implements Observer {
 	private void resetGrid() {
 		for(int i=0;i<Constants.NUM_ROWS;i++) {
 			for(int j=0;j<Constants.NUM_COLS;j++) {
-				gameGrid.getGrid()[i][j] = GameField.FREE;
+				gameGrid.setGrid(i,j,GameField.FREE);
 				view[i][j].resetGameField();
 			}
 		}
@@ -111,7 +111,7 @@ public class GridView extends JPanel implements Observer {
 		for(int i=0;i<Constants.NUM_ROWS;i++) {
 			
 			for(int j=0;j<Constants.NUM_COLS;j++) {
-				view[i][j] = new GameFieldView(gameGrid.getGrid()[i][j]);
+				view[i][j] = new GameFieldView(gameGrid.getGrid(i,j));
 				this.add(view[i][j]);
 			}
 		}
