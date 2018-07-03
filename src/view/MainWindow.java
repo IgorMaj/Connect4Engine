@@ -1,16 +1,20 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import controller.Agent;
@@ -20,6 +24,7 @@ import controller.MinimaxAgent;
 import controller.PlayerAgent;
 import controller.PlayerMove;
 import model.Constants;
+import model.Options;
 
 public class MainWindow extends JFrame{
 
@@ -31,10 +36,13 @@ public class MainWindow extends JFrame{
 	
 	private LinkedList<JButton> buttons = new LinkedList<JButton>();
 	
+	private Options options = new Options();
+	
 	public MainWindow() {
 		
 		BorderLayout bLayout = new BorderLayout();
 		this.setLayout(bLayout);
+		setMenu();
 		setControlPanel();
 		setGridView(new GridView(this));
 		this.add(getGridView(),BorderLayout.CENTER);
@@ -43,6 +51,25 @@ public class MainWindow extends JFrame{
 	}
 	
 	
+	private void setMenu() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenuItem gameOptionsMenu = new JMenuItem("Game options");
+		gameOptionsMenu.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				OptionsView optView = new OptionsView(options);
+				optView.setEnabled(true);
+				optView.setVisible(true);
+				
+			}
+			
+		});
+		menuBar.add(gameOptionsMenu);
+		this.setJMenuBar(menuBar);
+	}
+
+
 	private void setControlPanel() {
 		JPanel buttonPanel = new JPanel();
 		GridLayout gLayout = new GridLayout(0,Constants.NUM_COLS);
@@ -74,7 +101,7 @@ public class MainWindow extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gridView.setAgents((Agent)box1.getSelectedItem(), (Agent)box2.getSelectedItem());
+				gridView.setAgents((Agent)box1.getSelectedItem(), (Agent)box2.getSelectedItem(),options);
 				startButton.setText("Restart");
 				
 			}});
@@ -85,6 +112,7 @@ public class MainWindow extends JFrame{
 		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
 		
 		containerPanel.add(controlPanel);
+		containerPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		containerPanel.add(buttonPanel);
 		add(containerPanel,BorderLayout.NORTH);
 	}
@@ -92,8 +120,8 @@ public class MainWindow extends JFrame{
 	private void setupComboxBox(JComboBox<Agent> box1) {
 		box1.setEditable(false);
 		box1.addItem(new DummyAgent());
-		box1.addItem(new MinimaxAgent(4));
-		box1.addItem(new AlphaBetaAgent(10));
+		box1.addItem(new MinimaxAgent());
+		box1.addItem(new AlphaBetaAgent());
 		box1.addItem(new PlayerAgent());
 		
 	}

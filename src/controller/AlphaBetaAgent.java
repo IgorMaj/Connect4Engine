@@ -7,26 +7,20 @@ import model.GameGrid;
 import model.SearchState;
 import model.Turn;
 
-public class AlphaBetaAgent extends Agent {
+public class AlphaBetaAgent extends IntelligentAgent {
 
-	private int depth;
-	private SearchState currentState;
-	private Heuristic heuristic;
-	
-	private int numNodes = 0;
-	
 	
 	public AlphaBetaAgent(int d,Heuristic h) {
-		depth = d;
-		currentState = null;
-		heuristic = h;
+		super(d,h);
+	}
+	
+	public AlphaBetaAgent() {
+		super();
 	}
 	
 
 	public AlphaBetaAgent(int d) {
-		depth = d;
-		currentState = null;
-		heuristic =  new NullHeuristic();
+		super(d);
 	}
 
 
@@ -34,20 +28,6 @@ public class AlphaBetaAgent extends Agent {
 	public String toString() {
 		return "AlphaBetaAgent";
 	}
-
-
-	public int getDepth() {
-		return depth;
-	}
-
-
-
-	public void setDepth(int depth) {
-		this.depth = depth;
-	}
-	
-	
-
 
 
 	@Override
@@ -62,58 +42,10 @@ public class AlphaBetaAgent extends Agent {
 		
 		alphaBeta(currentState,Integer.MIN_VALUE,Integer.MAX_VALUE,depth);
 		currentState = pickBestMove(currentState);
-		System.out.println("Alpha beta Nodes: "+numNodes+"\n");
 		return currentState.getColumn();
 	}
 	
-
-	private SearchState updateState(GameGrid g) {
-		for(SearchState state:currentState.getSuccessors()) {
-			if(state.isEqualToGrid(g)) {
-				return state;
-			}
-		}
-		return null;
-	}
-
-
-	private SearchState pickBestMove(SearchState state) {
-		if(state.getTurn()==Turn.PLAYER_1) {
-			return pickMaxScoreState(state);
-		}
-		else {
-			return pickMinScoreState(state);
-		}
-	}
-
-
-	private SearchState pickMinScoreState(SearchState state) {
-		LinkedList<SearchState> successors = state.getSuccessors();
-		SearchState minScoreState = successors.getFirst();
-		for(SearchState successor:successors) {
-			if(successor.getScore() < minScoreState.getScore()) {
-				minScoreState = successor;
-			}
-		}
-		
-		return minScoreState;
-	}
-
-
-	private SearchState pickMaxScoreState(SearchState state) {
-		LinkedList<SearchState> successors = state.getSuccessors();
-		SearchState maxScoreState = successors.getFirst();
-		
-		for(SearchState successor:successors) {
-			if(successor.getScore() > maxScoreState.getScore()) {
-				maxScoreState = successor;
-			}
-		}
-		
-		return maxScoreState;
-	}
-
-
+	
 	private int alphaBeta(SearchState state,int alpha,int beta,int realDepth) {
 		
 		int depthPenalty = (depth-realDepth);
@@ -154,7 +86,7 @@ public class AlphaBetaAgent extends Agent {
 				break;
 			}
 		}
-		numNodes++;
+
 		return retVal;
 	}
 
@@ -170,14 +102,9 @@ public class AlphaBetaAgent extends Agent {
 				break;
 			}
 		}
-		numNodes++;
 		return retVal;
 	}
 
 
-	@Override
-	public void resetAgent() {
-		currentState = null;
-	}
 
 }

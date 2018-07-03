@@ -19,4 +19,12 @@ public class PlayerAgent extends Agent {
 	public void resetAgent() {
 	}
 
+	@Override
+	public void setHeuristic(Heuristic h) {
+	}
+
+	@Override
+	public void setDepth(int d) {
+	}
+
 }

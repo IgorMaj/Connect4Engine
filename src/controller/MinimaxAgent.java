@@ -6,26 +6,20 @@ import model.GameGrid;
 import model.SearchState;
 import model.Turn;
 
-public class MinimaxAgent extends Agent {
-	
-	private int depth;
-	private SearchState currentState;
-	private Heuristic heuristic;
-	
-	private int numNodes = 0;
-	
+public class MinimaxAgent extends IntelligentAgent {
+		
 	
 	public MinimaxAgent(int d,Heuristic h) {
-		depth = d;
-		currentState = null;
-		heuristic = h;
+		super(d,h);
+	}
+	
+	public MinimaxAgent() {
+		super();
 	}
 	
 
 	public MinimaxAgent(int d) {
-		depth = d;
-		currentState = null;
-		heuristic =  new NullHeuristic();
+		super(d);
 	}
 
 
@@ -33,20 +27,6 @@ public class MinimaxAgent extends Agent {
 	public String toString() {
 		return "MinimaxAgent";
 	}
-
-
-	public int getDepth() {
-		return depth;
-	}
-
-
-
-	public void setDepth(int depth) {
-		this.depth = depth;
-	}
-	
-	
-
 
 
 	@Override
@@ -61,58 +41,9 @@ public class MinimaxAgent extends Agent {
 		
 		minimax(currentState,depth);
 		currentState = pickBestMove(currentState);
-		System.out.println("Minimax num nodes:"+numNodes);
 		return currentState.getColumn();
 	}
 	
-
-	private SearchState updateState(GameGrid g) {
-		for(SearchState state:currentState.getSuccessors()) {
-			if(state.isEqualToGrid(g)) {
-				return state;
-			}
-		}
-		return null;
-	}
-
-
-	private SearchState pickBestMove(SearchState state) {
-		if(state.getTurn()==Turn.PLAYER_1) {
-			return pickMaxScoreState(state);
-		}
-		else {
-			return pickMinScoreState(state);
-		}
-	}
-
-
-	private SearchState pickMinScoreState(SearchState state) {
-		LinkedList<SearchState> successors = state.getSuccessors();
-		SearchState minScoreState = successors.getFirst();
-		for(SearchState successor:successors) {
-			if(successor.getScore() < minScoreState.getScore()) {
-				minScoreState = successor;
-			}
-		}
-		
-		return minScoreState;
-	}
-
-
-	private SearchState pickMaxScoreState(SearchState state) {
-		LinkedList<SearchState> successors = state.getSuccessors();
-		SearchState maxScoreState = successors.getFirst();
-		
-		for(SearchState successor:successors) {
-			if(successor.getScore() > maxScoreState.getScore()) {
-				maxScoreState = successor;
-			}
-		}
-		
-		return maxScoreState;
-	}
-
-
 	private int minimax(SearchState state,int realDepth) {
 		
 		int depthPenalty = (depth-realDepth);
@@ -148,7 +79,6 @@ public class MinimaxAgent extends Agent {
 		for(SearchState s:successors) {
 			retVal = Math.min(retVal,minimax(s,realDepth-1));
 		}
-		numNodes++;
 		return retVal;
 	}
 
@@ -159,15 +89,7 @@ public class MinimaxAgent extends Agent {
 		for(SearchState s:successors) {
 			retVal = Math.max(retVal,minimax(s,realDepth-1));
 		}
-		numNodes++;
 		return retVal;
 	}
-
-
-	@Override
-	public void resetAgent() {
-		currentState = null;
-	}
-	
 
 }

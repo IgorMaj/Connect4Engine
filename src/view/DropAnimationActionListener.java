@@ -39,6 +39,7 @@ public class DropAnimationActionListener extends Observable implements ActionLis
 		else {
 			((Timer)arg0.getSource()).stop();
 			notifyObservers();
+			deleteObservers();
 		}
 		
 	}

@@ -15,6 +15,7 @@ import exception.IllegalMove;
 import model.Constants;
 import model.GameField;
 import model.GameGrid;
+import model.Options;
 import model.Turn;
 
 public class GridView extends JPanel implements Observer {
@@ -40,10 +41,18 @@ public class GridView extends JPanel implements Observer {
 		//setAgents();
 	}
 	
-	public void setAgents(Agent agent1,Agent agent2) {
+	public void setAgents(Agent agent1,Agent agent2,Options opt) {
 		agents = new LinkedHashMap<Turn,Agent>();
 		agent1.resetAgent();
 		agent2.resetAgent();
+		
+		agent1.setDepth(opt.getAgent1Depth());
+		agent2.setDepth(opt.getAgent2Depth());
+		
+		
+		agent1.setHeuristic(opt.getAgent1Heuristic());
+		agent2.setHeuristic(opt.getAgent2Heuristic());
+		
 		resetGrid();
 		turn = Turn.PLAYER_1;
 		agents.put(Turn.PLAYER_1, agent1);

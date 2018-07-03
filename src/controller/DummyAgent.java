@@ -29,5 +29,17 @@ public class DummyAgent extends Agent {
 	public void resetAgent() {
 		
 	}
+
+	@Override
+	public void setHeuristic(Heuristic h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDepth(int d) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
