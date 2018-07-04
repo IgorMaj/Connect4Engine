@@ -47,13 +47,13 @@ public class SearchState extends GameGrid {
 		successors = new LinkedList<SearchState>();
 		column = 0;
 		score = 0;
-		setGrid(state.grid);
+		setGrid(state);
 		turn = t;
 	}
 	
 	public SearchState(GameGrid g) {
 		successors = new LinkedList<SearchState>();
-		setGrid(g.grid);
+		setGrid(g);
 		turn = Turn.PLAYER_1;
 	}
 	
@@ -67,13 +67,10 @@ public class SearchState extends GameGrid {
 		this.score = score;
 	}
 
-	private void setGrid(GameField[][] g) {
-		grid = new GameField[Constants.NUM_ROWS][Constants.NUM_COLS];
-		for(int i=0;i< Constants.NUM_ROWS;i++) {
-			for(int j=0;j<Constants.NUM_COLS;j++) {
-				grid[i][j] = g[i][j];
-			}
-		}
+	private void setGrid(GameGrid g) {
+		bitboards[0] = g.bitboards[0];
+		bitboards[1] =g.bitboards[1];
+		height  = g.height.clone();
 	}
 
 	
@@ -105,13 +102,6 @@ public class SearchState extends GameGrid {
 	@Override
 	public String toString() {
 		StringBuilder retVal = new StringBuilder();
-		for(int i=0;i< Constants.NUM_ROWS;i++) {
-			retVal.append("|");
-			for(int j=0;j<Constants.NUM_COLS;j++) {
-				retVal.append(grid[i][j]+"|");
-			}
-			retVal.append("\n");
-		}
 		retVal.append("\nTurn: "+turn+"\nColumn: "+column+"\nScore: "+score+"\n");
 		return retVal.toString();
 	}
@@ -129,13 +119,10 @@ public class SearchState extends GameGrid {
 	}
 
 	public boolean isEqualToGrid(GameGrid g) {
-		for(int i=0;i< Constants.NUM_ROWS;i++) {
-			for(int j=0;j<Constants.NUM_COLS;j++) {
-				if(g.getGrid(i,j)!=grid[i][j]) {
-					return false;
-				}
-			}
-		}
-		return true;
+		return g.bitboards[0] == bitboards[0] && g.bitboards[1]==bitboards[1];
+	}
+
+	public boolean hasExploredSuccessors() {
+		return successors.size()==0;
 	}
 }

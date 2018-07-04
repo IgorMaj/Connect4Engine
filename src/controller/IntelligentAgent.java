@@ -102,5 +102,6 @@ public abstract class IntelligentAgent extends Agent {
 	@Override
 	public void resetAgent() {
 		currentState = null;
+		System.gc();
 	}
 }

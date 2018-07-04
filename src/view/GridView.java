@@ -67,9 +67,9 @@ public class GridView extends JPanel implements Observer {
 	}
 	
 	private void resetGrid() {
+		gameGrid.resetGrid();
 		for(int i=0;i<Constants.NUM_ROWS;i++) {
 			for(int j=0;j<Constants.NUM_COLS;j++) {
-				gameGrid.setGrid(i,j,GameField.FREE);
 				view[i][j].resetGameField();
 			}
 		}
