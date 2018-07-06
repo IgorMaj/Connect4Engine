@@ -33,7 +33,7 @@ public class GameGrid {
 		columnFullMask = 0b1000000100000010000001000000100000010000001000000L;
 	}
 	
-	protected byte[] height = {0,  7, 14, 21, 28, 35, 42};
+	protected byte[] height = new byte[Constants.NUM_COLS];
 	
 	public static void main(String [] args) throws IllegalMove {
 		GameGrid g = new GameGrid();
@@ -56,6 +56,7 @@ public class GameGrid {
 	public GameGrid() {
 		bitboards[0] = 0;
 		bitboards[1] = 0;
+		setHeight();
 	}
 	
 	
@@ -144,12 +145,18 @@ public class GameGrid {
 	public void resetGrid() {
 		bitboards[0] = 0;
 		bitboards[1]  = 0;
-		int sum = 0;
+		setHeight();
+	}
+
+	private void setHeight() {
+		byte sum = 0;
 	    for(int i=0;i<Constants.NUM_COLS;i++) {
-	    	height[i] = (byte)sum;
+	    	height[i] = sum;
 	    	sum += Constants.NUM_COLS;
 	    }
+		
 	}
+
 
 	public GameField getGrid(int i, int j) {
 		int pos = Constants.NUM_ROWS-1-i + (j)*Constants.NUM_COLS;

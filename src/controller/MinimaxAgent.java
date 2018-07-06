@@ -61,11 +61,11 @@ public class MinimaxAgent extends IntelligentAgent {
 		}
 		else {
 			if(state.getTurn()==Turn.PLAYER_1) {
-				state.setScore(maxValue(state,realDepth)+heuristic.computeScore(state));
+				state.setScore(maxValue(state,realDepth));
 				
 			}
 			else {
-				state.setScore(minValue(state,realDepth)-heuristic.computeScore(state));
+				state.setScore(minValue(state,realDepth));
 			}
 		}
 		

@@ -19,11 +19,25 @@ public class SearchState extends GameGrid {
 		for(int i=0;i<moveOrder.length;i++) {
 			moveOrder[i] = i+1;
 		}
+		int order = 0;
 		
-		int temp = moveOrder[0];
+		int temp = moveOrder[order];
 		int index = Constants.NUM_COLS/2;
-		moveOrder[0] = moveOrder[index];
+		moveOrder[order] = moveOrder[index];
 		moveOrder[index] = temp;
+		order++;
+		
+		temp = moveOrder[order];
+		index = Constants.NUM_COLS/2 - 1;
+		moveOrder[order] = moveOrder[index];
+		moveOrder[index] = temp;
+		order++;
+		
+		temp = moveOrder[order];
+		index = Constants.NUM_COLS/2 + 1;
+		moveOrder[order] = moveOrder[index];
+		moveOrder[index] = temp;
+		order++;
 		
 	}
 	

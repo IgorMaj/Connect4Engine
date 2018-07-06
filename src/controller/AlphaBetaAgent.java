@@ -60,14 +60,15 @@ public class AlphaBetaAgent extends IntelligentAgent {
 		}
 		else if(realDepth==0) {
 			state.setScore(heuristic.computeScore(state));
+			
 		}
 		else {
 			if(state.getTurn()==Turn.PLAYER_1) {
-				state.setScore(maxValue(state,alpha,beta,realDepth)+heuristic.computeScore(state));
+				state.setScore(maxValue(state,alpha,beta,realDepth));
 				
 			}
 			else {
-				state.setScore(minValue(state,alpha,beta,realDepth)-heuristic.computeScore(state));
+				state.setScore(minValue(state,alpha,beta,realDepth));
 			}
 		}
 		
@@ -81,10 +82,10 @@ public class AlphaBetaAgent extends IntelligentAgent {
 		for(SearchState s:successors) {
 			retVal = Math.min(retVal,alphaBeta(s,alpha,beta,realDepth-1));
 			
-			beta = Math.min(beta, retVal);
-			if(alpha>=beta) {
-				break;
+			if(retVal <= alpha) {
+				return retVal;
 			}
+			beta = Math.min(beta, retVal);
 		}
 
 		return retVal;
@@ -96,11 +97,11 @@ public class AlphaBetaAgent extends IntelligentAgent {
 		int retVal = Integer.MIN_VALUE;
 		for(SearchState s:successors) {
 			retVal = Math.max(retVal,alphaBeta(s,alpha,beta,realDepth-1));
-			
-			alpha = Math.max(retVal,alpha);
-			if(alpha>=beta) {
-				break;
+
+			if(retVal >= beta) {
+				return retVal;
 			}
+			alpha = Math.max(retVal,alpha);
 		}
 		return retVal;
 	}
