@@ -48,6 +48,7 @@ public class OptionsView extends JDialog {
 		currentOptions = opt;
 		setElements();
 		setUI();
+		this.setLocationRelativeTo(getParent());
 	}
 	
 	private void setElements() {

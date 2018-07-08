@@ -48,6 +48,7 @@ public class MainWindow extends JFrame{
 		this.add(getGridView(),BorderLayout.CENTER);
 		this.setSize(Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(getParent());
 	}
 	
 	
